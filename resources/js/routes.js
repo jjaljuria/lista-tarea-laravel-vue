@@ -4,8 +4,11 @@ import AppPomodoro from './components/Sobre.vue';
 const routes = [{
 	path: '/', component: AppLista
 },
-	{
-	path:'/pomodoro', component: AppPomodoro
+{
+	path: '/pomodoro', component: AppPomodoro
+},
+{
+	path: '/*', component: AppLista
 }]
 
 export default routes

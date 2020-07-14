@@ -74470,8 +74470,7 @@ Vue.use(VueRouter);
 
 Vue.component('Tabs', __webpack_require__(/*! ./components/Tabs.vue */ "./resources/js/components/Tabs.vue")["default"]);
 var router = new VueRouter({
-  routes: _routes__WEBPACK_IMPORTED_MODULE_0__["default"],
-  mode: 'history'
+  routes: _routes__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -74948,6 +74947,9 @@ var routes = [{
 }, {
   path: '/pomodoro',
   component: _components_Sobre_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+}, {
+  path: '/*',
+  component: _components_AppLista_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
 }];
 /* harmony default export */ __webpack_exports__["default"] = (routes);
 

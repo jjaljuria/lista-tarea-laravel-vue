@@ -25,7 +25,7 @@ Vue.use(VueRouter);
 
 Vue.component('Tabs', require('./components/Tabs.vue').default);
 
-const router = new VueRouter({ routes, mode: 'history' });
+const router = new VueRouter({ routes });
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
