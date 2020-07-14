@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import panelIngreso from "./components/panelIngreso.vue";
-import listaTarea from "./components/listaTarea.vue";
+import panelIngreso from "./panelIngreso.vue";
+import listaTarea from "./listaTarea.vue";
 import $ from "jquery";
 import axios from "axios";
 export default {
