@@ -17,7 +17,7 @@ class CreacionTablaPomodoro extends Migration
             $table->id();
             $table->integer('pomodorosActivos')->default(4);
             $table->boolean('periodoDescanso')->default(false);
-            $table->integer('tiempoPomodoroActualEnSegundos');
+            $table->integer('tiempoPomodoroActualEnSegundos')->default(1500);
             $table->timestamps();
         });
     }
