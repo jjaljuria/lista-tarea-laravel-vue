@@ -1925,8 +1925,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -58947,31 +58945,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "container mt-4" }, [
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        { staticClass: "col-6 border-right" },
-        [_c("panel-ingreso", { on: { guardado: _vm.guardarEnLista } })],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "col-6",
-          staticStyle: { "max-height": "25rem", "overflow-y": "auto" }
-        },
-        [
-          _c("lista-tarea", {
-            staticClass: "mx-3",
-            attrs: { lista: _vm.lista },
-            on: { itemEliminado: _vm.eliminarEnLista }
-          })
-        ],
-        1
-      )
-    ])
+  return _c("section", { staticClass: "mt-4 row" }, [
+    _c(
+      "div",
+      { staticClass: "col-12 col-md-6 border-right" },
+      [_c("panel-ingreso", { on: { guardado: _vm.guardarEnLista } })],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "col-12 col-md-6",
+        staticStyle: { "max-height": "25rem", "overflow-y": "auto" }
+      },
+      [
+        _c("lista-tarea", {
+          staticClass: "mx-3",
+          attrs: { lista: _vm.lista },
+          on: { itemEliminado: _vm.eliminarEnLista }
+        })
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -59020,10 +59016,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "row" }, [
     _c(
       "ul",
-      { staticClass: "nav nav-tabs", attrs: { id: "myTab", role: "tablist" } },
+      {
+        staticClass: "nav nav-tabs col-12",
+        attrs: { id: "myTab", role: "tablist" }
+      },
       [
         _c(
           "li",

@@ -1,13 +1,11 @@
 <template>
-  <section class="container mt-4">
-    <div class="row">
-      <div class="col-6 border-right">
+  <section class="mt-4 row">
+      <div class="col-12 col-md-6 border-right">
         <panel-ingreso @guardado="guardarEnLista" />
       </div>
-      <div class="col-6" style="max-height: 25rem; overflow-y: auto;">
+      <div class="col-12 col-md-6" style="max-height: 25rem; overflow-y: auto;">
         <lista-tarea :lista="lista" class="mx-3" v-on:itemEliminado="eliminarEnLista"></lista-tarea>
       </div>
-    </div>
   </section>
 </template>
 

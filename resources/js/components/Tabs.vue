@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <div class="row">
+    <ul class="nav nav-tabs col-12" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <router-link to="/" class="nav-link" data-toggle="tab" role="tab">Lista de Tareas</router-link>
       </li>
