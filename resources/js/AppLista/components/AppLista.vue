@@ -72,7 +72,7 @@ export default {
       console.log(this.contador);
     },
     eliminarEnLista: function(id) {
-      console.log(id);
+      
       const ajax = $.ajax({
         url: "api/AppLista/destroy/" + id,
         type: "Delete",

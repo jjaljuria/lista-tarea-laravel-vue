@@ -1979,7 +1979,6 @@ __webpack_require__.r(__webpack_exports__);
     eliminarEnLista: function eliminarEnLista(id) {
       var _this = this;
 
-      console.log(id);
       var ajax = jquery__WEBPACK_IMPORTED_MODULE_2___default.a.ajax({
         url: "api/AppLista/destroy/" + id,
         type: "Delete"
@@ -2129,7 +2128,6 @@ __webpack_require__.r(__webpack_exports__);
       if (moment_moment__WEBPACK_IMPORTED_MODULE_0___default()(evento.target.value).format('YYYY-MM-DD') < moment_moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD')) {
         evento.target.value = moment_moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD');
         alert('No puede ser una fecha anterior a hoy');
-        console.log(evento);
       } else {
         this.fecha = evento.target.value;
       }

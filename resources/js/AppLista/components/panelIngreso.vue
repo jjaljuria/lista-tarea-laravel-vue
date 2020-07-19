@@ -38,7 +38,7 @@ export default {
 			if(moment(evento.target.value).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')){
 				evento.target.value = moment().format('YYYY-MM-DD');
 				alert('No puede ser una fecha anterior a hoy');
-				console.log(evento);
+				
 			}else{
 				this.fecha = evento.target.value;
 			}
