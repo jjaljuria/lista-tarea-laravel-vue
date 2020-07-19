@@ -62,6 +62,6 @@ class TareaController extends Controller
      */
     public function destroy(int $id)
     {
-        Tarea::where('idTareas', '=', $id)->delete();
+        Tarea::where('id', '=', $id)->delete();
     }
 }

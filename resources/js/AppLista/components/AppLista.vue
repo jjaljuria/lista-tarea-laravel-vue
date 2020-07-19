@@ -33,6 +33,7 @@ export default {
         .get("api/AppLista")
         .then(function(respuesta) {
           self.lista = respuesta.data;
+          console.log(self.lista);
           self.contador = respuesta.data.length + 1;
         })
         .catch(function(error) {
@@ -71,7 +72,7 @@ export default {
       console.log(this.contador);
     },
     eliminarEnLista: function(id) {
-
+      console.log(id);
       const ajax = $.ajax({
         url: "api/AppLista/destroy/" + id,
         type: "Delete",
@@ -81,6 +82,10 @@ export default {
         console.log("Eliminado " + id);
         this.obtenerLista();
       });
+
+      ajax.fail((error) => {
+        console.log(error);
+      })
     }
   },
   name: "App",

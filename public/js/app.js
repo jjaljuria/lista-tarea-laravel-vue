@@ -1944,6 +1944,7 @@ __webpack_require__.r(__webpack_exports__);
       var self = this;
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("api/AppLista").then(function (respuesta) {
         self.lista = respuesta.data;
+        console.log(self.lista);
         self.contador = respuesta.data.length + 1;
       })["catch"](function (error) {
         console.log(error);
@@ -1978,6 +1979,7 @@ __webpack_require__.r(__webpack_exports__);
     eliminarEnLista: function eliminarEnLista(id) {
       var _this = this;
 
+      console.log(id);
       var ajax = jquery__WEBPACK_IMPORTED_MODULE_2___default.a.ajax({
         url: "api/AppLista/destroy/" + id,
         type: "Delete"
@@ -1986,6 +1988,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log("Eliminado " + id);
 
         _this.obtenerLista();
+      });
+      ajax.fail(function (error) {
+        console.log(error);
       });
     }
   },
@@ -2026,7 +2031,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['tarea'],
   methods: {
     eliminar: function eliminar() {
-      this.$emit('itemEliminado', this.tarea.idTareas);
+      this.$emit('itemEliminado', this.tarea.id);
     }
   }
 });
@@ -2114,8 +2119,7 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.$emit('guardado', {
           nombreTarea: this.tarea,
-          fecha: this.fecha,
-          idTareas: this.id + 1
+          fecha: this.fecha
         });
         this.tarea = '';
         this.fecha = moment_moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD');

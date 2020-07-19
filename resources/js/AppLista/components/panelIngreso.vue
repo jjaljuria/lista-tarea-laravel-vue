@@ -27,7 +27,7 @@ export default {
 			if(this.tarea == ''){
 				alert('debe tener colocar una tarea');
 			}else{
-				this.$emit('guardado', {nombreTarea: this.tarea, fecha: this.fecha, idTareas: this.id + 1})
+				this.$emit('guardado', {nombreTarea: this.tarea, fecha: this.fecha})
 				this.tarea = '';
 				this.fecha = moment().format('YYYY-MM-DD');
 			}

@@ -18,7 +18,7 @@ export default {
 	props: ['tarea'],
 	methods: {
 		eliminar: function(){
-			this.$emit('itemEliminado', this.tarea.idTareas);
+			this.$emit('itemEliminado', this.tarea.id);
 		}
 	}
 }
