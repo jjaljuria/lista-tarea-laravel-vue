@@ -1,5 +1,5 @@
 import AppLista from './AppLista/components/AppLista.vue';
-import AppPomodoro from './AppLista/components/Sobre.vue';
+import AppPomodoro from './AppPomodoro/components/AppPomodoro.vue';
 
 const routes = [{
 	path: '/', component: AppLista

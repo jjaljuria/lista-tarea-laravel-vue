@@ -30,7 +30,7 @@ export default {
     obtenerLista: function() {
       let self = this;
       axios
-        .get("api/")
+        .get("api/AppLista")
         .then(function(respuesta) {
           self.lista = respuesta.data;
           self.contador = respuesta.data.length + 1;
@@ -44,7 +44,7 @@ export default {
 
       console.log(datos);
       const ajax = $.ajax({
-        url: "api/store",
+        url: "api/AppLista/store",
         type: "POST",
         data: datos
       });
@@ -73,7 +73,7 @@ export default {
     eliminarEnLista: function(id) {
 
       const ajax = $.ajax({
-        url: "api/destroy/" + id,
+        url: "api/AppLista/destroy/" + id,
         type: "Delete",
       });
 

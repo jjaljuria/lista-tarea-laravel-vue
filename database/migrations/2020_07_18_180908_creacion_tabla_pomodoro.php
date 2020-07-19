@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ForeignKeyDefinition;
 use Illuminate\Support\Facades\Schema;
 
 class CreacionTablaPomodoro extends Migration
@@ -13,10 +14,15 @@ class CreacionTablaPomodoro extends Migration
      */
     public function up()
     {
-        Schema::create('pomodoros', function (Blueprint $table) {
+        Schema::create('contadorPomodoros', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('idUsuario')->unsigned();
+            $table->foreign('idUsuario')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->integer('pomodorosActivos')->default(4);
-            $table->boolean('periodoDescanso')->default(false);
             $table->integer('tiempoPomodoroActualEnSegundos')->default(1500);
             $table->timestamps();
         });

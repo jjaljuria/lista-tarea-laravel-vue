@@ -18,6 +18,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', 'TareaController@index');
-Route::post('/store', 'TareaController@store');
-Route::delete('/destroy/{id}', 'TareaController@destroy');
+
+Route::group(['prefix' => 'AppLista'], function() {
+    Route::get('/', 'TareaController@index');
+    Route::post('/store', 'TareaController@store');
+    Route::delete('/destroy/{id}', 'TareaController@destroy');
+});
+
+
+Route::group(['prefix' => 'AppPomodoro'], function() {
+   Route::get('/', 'PomodoroController@index');
+   Route::post('/store', 'PomodoroController@store');
+});
+
+
+
