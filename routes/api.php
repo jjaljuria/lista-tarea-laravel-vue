@@ -27,8 +27,6 @@ Route::group(['prefix' => 'AppLista'], function() {
 
 
 Route::group(['prefix' => 'AppPomodoro'], function() {
-   Route::get('/', 'PomodoroController@index');
-   Route::post('/store', 'PomodoroController@store');
 });
 
 

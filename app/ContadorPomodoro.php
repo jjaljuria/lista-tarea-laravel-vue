@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pomodoro extends Model
 {
-    protected $table = "pomodoros";
+    protected $table = "contadorPomodoros";
     protected $fillable = [
         'pomodorosActivos', 'periodoDescanso', 'tiempoPomodoroActualEnSegundos',
     ];
