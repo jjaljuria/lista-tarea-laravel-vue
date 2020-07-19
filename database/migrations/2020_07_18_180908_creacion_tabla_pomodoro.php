@@ -35,6 +35,6 @@ class CreacionTablaPomodoro extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pomodoros');
+        Schema::dropIfExists('contadorPomodoros');
     }
 }
