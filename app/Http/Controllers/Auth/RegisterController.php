@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\ContadorPomodoro;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -65,26 +64,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        
-        $user = User::create([
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        $contadorPomodoro = new ContadorPomodoro();
-        $contadorPomodoro->idUsuario = $user->id;
-        $contadorPomodoro->save();
-        return $user;
-
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    private function crearContadorPomodoro(int $idUsuario){
-
     }
 }

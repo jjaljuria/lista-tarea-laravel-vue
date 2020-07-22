@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class ContadorPomodoro extends Model
 {
@@ -10,5 +11,10 @@ class ContadorPomodoro extends Model
     protected $fillable = [
         'pomodorosActivos', 'periodoDescanso', 'tiempoPomodoroActualEnSegundos',
     ];
+
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+    
     
 }
