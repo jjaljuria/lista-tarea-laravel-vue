@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pomodoro extends Model
+class ContadorPomodoro extends Model
 {
     protected $table = "contadorPomodoros";
     protected $fillable = [
