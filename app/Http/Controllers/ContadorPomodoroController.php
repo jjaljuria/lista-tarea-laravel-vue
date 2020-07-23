@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Auth;
 class ContadorPomodoroController extends Controller
 {
     private $id = 8;
-    public function index(){
-        return ContadorPomodoro::where('idUsuario','=', $this->id)->get(['pomodorosActivos', 'tiempoPomodoroActualEnSegundos']);
+    public function index(int $id){
+        return ContadorPomodoro::where('idUsuario','=', $id)->get(['pomodorosActivos', 'tiempoPomodoroActualEnSegundos']);
     }
 
 

@@ -29,7 +29,7 @@ Route::group(['prefix' => 'AppLista'], function() {
 
 
 Route::group(['prefix' => 'AppPomodoro'], function() {
-    Route::get('/', 'ContadorPomodoroController@index');
+    Route::get('/{id}', 'ContadorPomodoroController@index');
     Route::put('/update', 'ContadorPomodoroController@update');
 });
 
