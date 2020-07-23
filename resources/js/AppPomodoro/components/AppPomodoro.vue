@@ -3,13 +3,15 @@
     <div class="col-12">
       <button class="rounded-circle mx-auto d-block" @click="reiniciarCuentaRegresiva">play</button>
       <button class="rounded-circle mx-auto d-block" @click="detenerCuentaRegresiva">stop</button>
-      <reloj :tiempoPomodoroActualEnSegundos="contadorPomodoro.tiempoPomodoroActualEnSegundos"></reloj>
+      <reloj :tiempoPomodoroActualEnSegundos="datosAppPomodoro.tiempoPomodoroActualEnSegundos"></reloj>
+      <contadorPomodoros :pomodorosActivos="datosAppPomodoro.pomodorosActivos" :cantidadDePomodoros="cantidadDePomodoros"/>
     </div>
   </section>
 </template>
 
 <script>
 import reloj from "./Reloj";
+import contadorPomodoros from './ContadorPomodoros';
 import axios from "axios";
 
 export default {
@@ -19,14 +21,16 @@ export default {
 
   data: function () {
     return {
-      contadorPomodoro: {
+      datosAppPomodoro: {
         pomodorosActivos: 0,
         tiempoPomodoroActualEnSegundos: 0,
       },
+      cantidadDePomodoros: 4
     };
   },
   components: {
     reloj,
+    contadorPomodoros
   },
   methods: {
     async obtenerDatosDeInicio() {
@@ -39,7 +43,7 @@ export default {
           console.log(error);
         });
 
-      this.contadorPomodoro = resultado;
+      this.datosAppPomodoro = resultado;
     },
 
     iniciarCuentaRegrasiva() {
@@ -55,11 +59,11 @@ export default {
     },
 
     contar() {
-      if (this.contadorPomodoro.tiempoPomodoroActualEnSegundos > 0) {
-        this.contadorPomodoro.tiempoPomodoroActualEnSegundos -= 1;
-      } else if (this.contadorPomodoro.pomodorosActivos > 0) {
-        this.contadorPomodoro.pomodorosActivos -= 1;
-        this.contadorPomodoro.tiempoPomodoroActualEnSegundos = 1500;
+      if (this.datosAppPomodoro.tiempoPomodoroActualEnSegundos > 0) {
+        this.datosAppPomodoro.tiempoPomodoroActualEnSegundos -= 1;
+      } else if (this.datosAppPomodoro.pomodorosActivos > 0) {
+        this.datosAppPomodoro.pomodorosActivos -= 1;
+        this.datosAppPomodoro.tiempoPomodoroActualEnSegundos = 1500;
       } else {
         this.detenerCuentaRegresiva();
         this.iniciarDescanso();
@@ -67,6 +71,10 @@ export default {
     },
 
     iniciarDescanso() {},
+
+    generarPomodoros(){
+      
+    }
   },
 };
 </script>
