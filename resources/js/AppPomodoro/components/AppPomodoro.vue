@@ -1,17 +1,33 @@
 <template>
   <section class="row">
     <div class="col-12">
-      <button class="rounded-circle mx-auto d-block" @click="reiniciarCuentaRegresiva">play</button>
-      <button class="rounded-circle mx-auto d-block" @click="detenerCuentaRegresiva">stop</button>
-      <reloj :tiempoPomodoroActualEnSegundos="datosAppPomodoro.tiempoPomodoroActualEnSegundos"></reloj>
-      <contadorPomodoros :pomodorosActivos="datosAppPomodoro.pomodorosActivos" :cantidadDePomodoros="cantidadDePomodoros"/>
+      <vue-circle
+        :progress="30"
+        :reverse="true"
+        :show-percent="false"
+        :start-angle="-Math.PI/2"
+        line-cap="round"
+        :fill="{gradient: ['red', 'green', 'blue'] }"
+        insert-mode="append"
+        class="mx-auto"
+      >
+        <controlReloj v-on:play="play" v-on:pause="pause" />
+      </vue-circle>
+
+      <reloj :tiempoEnSegundos="datosAppPomodoro.tiempoPomodoroActualEnSegundos"></reloj>
+      <contadorPomodoros
+        :pomodorosActivos="datosAppPomodoro.pomodorosActivos"
+        :cantidadDePomodoros="cantidadDePomodoros"
+      />
     </div>
   </section>
 </template>
 
 <script>
 import reloj from "./Reloj";
-import contadorPomodoros from './ContadorPomodoros';
+import contadorPomodoros from "./ContadorPomodoros";
+import controlReloj from "./ControlReloj";
+import VueCircle from "vue2-circle-progress";
 import axios from "axios";
 
 export default {
@@ -24,13 +40,18 @@ export default {
       datosAppPomodoro: {
         pomodorosActivos: 0,
         tiempoPomodoroActualEnSegundos: 0,
+        tiempoDeDescansoCortoEnSegundos: 0,
+        tiempoDeDescansoLargoEnSegundos: 0,
       },
-      cantidadDePomodoros: 4
+      cantidadDePomodoros: 4,
+      descansando: false,
     };
   },
   components: {
     reloj,
-    contadorPomodoros
+    contadorPomodoros,
+    controlReloj,
+    VueCircle,
   },
   methods: {
     async obtenerDatosDeInicio() {
@@ -46,35 +67,38 @@ export default {
       this.datosAppPomodoro = resultado;
     },
 
-    iniciarCuentaRegrasiva() {
-      this.cuentaRegresiva = setInterval(this.contar, 1000);
+    iniciarCuentaPomodoro() {
+      this.cuentaPomodoro = setInterval(this.contarPomodoro, 1000);
     },
 
-    reiniciarCuentaRegresiva() {
-      this.iniciarCuentaRegrasiva();
+    detenerCuentaPomodoro() {
+      clearInterval(this.cuentaPomodoro);
     },
 
-    detenerCuentaRegresiva() {
-      clearInterval(this.cuentaRegresiva);
-    },
-
-    contar() {
+    contarPomodoro() {
       if (this.datosAppPomodoro.tiempoPomodoroActualEnSegundos > 0) {
         this.datosAppPomodoro.tiempoPomodoroActualEnSegundos -= 1;
       } else if (this.datosAppPomodoro.pomodorosActivos > 0) {
         this.datosAppPomodoro.pomodorosActivos -= 1;
         this.datosAppPomodoro.tiempoPomodoroActualEnSegundos = 1500;
+
+        this.detenerCuentaPomodoro();
+        this.iniciarDescansoCorto();
       } else {
-        this.detenerCuentaRegresiva();
-        this.iniciarDescanso();
       }
     },
 
-    iniciarDescanso() {},
+    play() {
+      this.iniciarCuentaPomodoro();
+    },
 
-    generarPomodoros(){
-      
-    }
+    pause() {
+      this.detenerCuentaPomodoro();
+    },
+
+    iniciarDescansoCorto() {
+      this.tiempoDeDescansoCortoEnSegundos = 300;
+    },
   },
 };
 </script>

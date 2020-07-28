@@ -8,16 +8,16 @@
 import moment from "moment";
 export default {
   props: {
-    tiempoPomodoroActualEnSegundos: { type: Number, required: true },
+    tiempoEnSegundos: { type: Number, required: true },
 	},
 
   computed: {
     minutos() {
-      return Math.floor(this.tiempoPomodoroActualEnSegundos/60);
+      return Math.floor(this.tiempoEnSegundos/60);
     },
     segundos() {
-			const minutos = Math.floor(this.tiempoPomodoroActualEnSegundos/60);
-      return Math.round(((this.tiempoPomodoroActualEnSegundos/60)-minutos)*60);
+			const minutos = Math.floor(this.tiempoEnSegundos/60);
+      return Math.round(((this.tiempoEnSegundos/60)-minutos)*60);
     },
   },
 };
