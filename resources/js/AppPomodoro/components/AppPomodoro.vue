@@ -2,14 +2,15 @@
   <section class="row">
     <div class="col-12">
       <vue-circle
-        :progress="30"
+				:size="300"
+        :progress="progreso"
         :reverse="true"
         :show-percent="false"
         :start-angle="-Math.PI/2"
         line-cap="round"
-        :fill="{gradient: ['red', 'green', 'blue'] }"
+        :fill="{color: 'red' }"
         insert-mode="append"
-        class="mx-auto"
+				id="vue-circle"
       >
         <controlReloj v-on:play="play" v-on:pause="pause" />
       </vue-circle>
@@ -43,8 +44,9 @@ export default {
         tiempoDeDescansoCortoEnSegundos: 0,
         tiempoDeDescansoLargoEnSegundos: 0,
       },
-      cantidadDePomodoros: 4,
-      descansando: false,
+			cantidadDePomodoros: 4,
+			duracionDeLosPomodoros: 1500,
+			descansando: false,
     };
   },
   components: {
@@ -52,7 +54,14 @@ export default {
     contadorPomodoros,
     controlReloj,
     VueCircle,
-  },
+	},
+	
+	computed:{
+		progreso(){
+			console.log((this.datosAppPomodoro.tiempoPomodoroActualEnSegundos / this.duracionDeLosPomodoros) * 100);
+			return  (this.datosAppPomodoro.tiempoPomodoroActualEnSegundos / this.duracionDeLosPomodoros) * 100;
+		}
+	},
   methods: {
     async obtenerDatosDeInicio() {
       let resultado = await axios
@@ -102,3 +111,11 @@ export default {
   },
 };
 </script>
+
+<style>
+	#vue-circle{
+		left:50%;
+		transform: translateX(-50%);
+		
+	}
+</style>
