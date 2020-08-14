@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "bootstrap-icons": "^1.0.0-alpha5",
+        "jest": "^26.4.0",
         "moment": "^2.27.0",
         "vue-ellipse-progress": "^1.1.1",
         "vue-router": "^3.3.4",
