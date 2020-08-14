@@ -40,11 +40,11 @@ export default {
   },
   methods: {
     play() {
-      this.$emit("play");
+      this.$emit("reproducir");
       this.estadoActual = "play";
     },
     pause() {
-      this.$emit("pause");
+      this.$emit("detener");
       this.estadoActual = "pause";
     },
   },

@@ -2160,7 +2160,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Reloj__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Reloj */ "./resources/js/AppPomodoro/components/Reloj.vue");
+/* harmony import */ var _Cronometro__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Cronometro */ "./resources/js/AppPomodoro/components/Cronometro.vue");
 /* harmony import */ var _ContadorPomodoros__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ContadorPomodoros */ "./resources/js/AppPomodoro/components/ContadorPomodoros.vue");
 /* harmony import */ var _ControlReloj__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ControlReloj */ "./resources/js/AppPomodoro/components/ControlReloj.vue");
 /* harmony import */ var vue2_circle_progress__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-circle-progress */ "./node_modules/vue2-circle-progress/dist/vue-circle-progress.js");
@@ -2199,6 +2199,75 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2210,28 +2279,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      datosAppPomodoro: {
-        pomodorosActivos: 0,
-        tiempoPomodoroActualEnSegundos: 0,
-        tiempoDeDescansoCortoEnSegundos: 0,
-        tiempoDeDescansoLargoEnSegundos: 0
-      },
+      pomodorosActivos: 0,
       cantidadDePomodoros: 4,
       duracionDeLosPomodoros: 1500,
-      descansando: false
+      duracionDelDescansoCorto: 300,
+      duracionDelDescansoLargo: 900,
+      descansoCorto: false,
+      descansoLargo: false,
+      trabajo: true
     };
   },
   components: {
-    reloj: _Reloj__WEBPACK_IMPORTED_MODULE_1__["default"],
+    cronometro: _Cronometro__WEBPACK_IMPORTED_MODULE_1__["default"],
     contadorPomodoros: _ContadorPomodoros__WEBPACK_IMPORTED_MODULE_2__["default"],
     controlReloj: _ControlReloj__WEBPACK_IMPORTED_MODULE_3__["default"],
     VueCircle: vue2_circle_progress__WEBPACK_IMPORTED_MODULE_4___default.a
-  },
-  computed: {
-    progreso: function progreso() {
-      console.log(this.datosAppPomodoro.tiempoPomodoroActualEnSegundos / this.duracionDeLosPomodoros * 100);
-      return this.datosAppPomodoro.tiempoPomodoroActualEnSegundos / this.duracionDeLosPomodoros * 100;
-    }
   },
   methods: {
     obtenerDatosDeInicio: function obtenerDatosDeInicio() {
@@ -2252,9 +2314,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 resultado = _context.sent;
-                _this.datosAppPomodoro = resultado;
+                _this.pomodorosActivos = resultado.pomodorosActivos;
 
-              case 4:
+                _this.$refs.cronometroPomodoro.actualizar(resultado.tiempoPomodoroActualEnSegundos);
+
+                _this.$refs.progresoPomodoro.updateProgress(_this.obtenerPorcentaje(resultado.tiempoPomodoroActualEnSegundos, _this.duracionDeLosPomodoros));
+
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2262,30 +2328,69 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    iniciarCuentaPomodoro: function iniciarCuentaPomodoro() {
-      this.cuentaPomodoro = setInterval(this.contarPomodoro, 1000);
-    },
-    detenerCuentaPomodoro: function detenerCuentaPomodoro() {
-      clearInterval(this.cuentaPomodoro);
-    },
-    contarPomodoro: function contarPomodoro() {
-      if (this.datosAppPomodoro.tiempoPomodoroActualEnSegundos > 0) {
-        this.datosAppPomodoro.tiempoPomodoroActualEnSegundos -= 1;
-      } else if (this.datosAppPomodoro.pomodorosActivos > 0) {
-        this.datosAppPomodoro.pomodorosActivos -= 1;
-        this.datosAppPomodoro.tiempoPomodoroActualEnSegundos = 1500;
-        this.detenerCuentaPomodoro();
+    descanzar: function descanzar(event) {
+      if (this.pomodorosActivos > 1) {
         this.iniciarDescansoCorto();
-      } else {}
-    },
-    play: function play() {
-      this.iniciarCuentaPomodoro();
-    },
-    pause: function pause() {
-      this.detenerCuentaPomodoro();
+      } else {
+        this.iniciarDescansoLargo();
+      }
+
+      this.pomodorosActivos -= 1;
     },
     iniciarDescansoCorto: function iniciarDescansoCorto() {
-      this.tiempoDeDescansoCortoEnSegundos = 300;
+      this.descansoCorto = true;
+      this.trabajo = false;
+    },
+    iniciarDescansoLargo: function iniciarDescansoLargo() {
+      this.descansoLargo = true;
+      this.trabajo = false;
+    },
+    trabajar: function trabajar() {
+      if (this.descansoCorto) {
+        this.descansoCorto = false;
+      } else {
+        this.descansoLargo = false;
+        this.pomodorosActivos = this.cantidadDePomodoros;
+      }
+
+      this.trabajo = true;
+    },
+    progreso: function progreso(tiempoTrancurridoEnSegundos) {
+      var progreso, total, porcentaje;
+
+      if (this.trabajo) {
+        progreso = this.$refs.progresoPomodoro;
+        total = this.duracionDeLosPomodoros;
+      } else if (this.descansoCorto) {
+        progreso = this.$refs.progresoDescansoCorto;
+        total = this.duracionDelDescansoCorto;
+      } else {
+        progreso = this.$refs.progresoDescansoLargo;
+        total = this.duracionDelDescansoLargo;
+      }
+
+      progreso.updateProgress(this.obtenerPorcentaje(tiempoTrancurridoEnSegundos, total));
+    },
+    obtenerPorcentaje: function obtenerPorcentaje(tiempoTrancurridoEnSegundos, total) {
+      return tiempoTrancurridoEnSegundos / total * 100;
+    },
+    reproducirPomodoro: function reproducirPomodoro() {
+      this.$refs.cronometroPomodoro.reproducir();
+    },
+    detenerPomodoro: function detenerPomodoro() {
+      this.$refs.cronometroPomodoro.detener();
+    },
+    reproducirDescansoCorto: function reproducirDescansoCorto() {
+      this.$refs.cronometroDescansoCorto.reproducir();
+    },
+    detenerDescansoCorto: function detenerDescansoCorto() {
+      this.$refs.cronometroDescansoCorto.detener();
+    },
+    reproducirDescansoLargo: function reproducirDescansoLargo() {
+      this.$refs.cronometroDescansoLargo.reproducir();
+    },
+    detenerDescansoLargo: function detenerDescansoLargo() {
+      this.$refs.cronometroDescansoLargo.detener();
     }
   }
 });
@@ -2394,12 +2499,89 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     play: function play() {
-      this.$emit("play");
+      this.$emit("reproducir");
       this.estadoActual = "play";
     },
     pause: function pause() {
-      this.$emit("pause");
+      this.$emit("detener");
       this.estadoActual = "pause";
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {
+    this._constructor();
+  },
+  props: {
+    tiempoInicialEnSegundos: {
+      type: Number,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      tiempoTranscurridoEnSegundos: 0
+    };
+  },
+  methods: {
+    _constructor: function _constructor() {
+      this.contador = 0;
+      console.log(this.tiempoInicialEnSegundos);
+      this.tiempoTranscurridoEnSegundos = this.tiempoInicialEnSegundos;
+      console.log(this.tiempoTranscurridoEnSegundos);
+    },
+    _contar: function _contar() {
+      if (this.tiempoTranscurridoEnSegundos > 0) {
+        this.tiempoTranscurridoEnSegundos -= 1;
+        this.$emit('cambio', this.tiempoTranscurridoEnSegundos);
+      } else {
+        this.$emit('alarma');
+        clearInterval(this.contador);
+      }
+    },
+    reproducir: function reproducir() {
+      this.contador = setInterval(this._contar, 1000);
+    },
+    detener: function detener() {
+      clearInterval(this.contador);
+    },
+    reiniciar: function reiniciar() {
+      this.detener();
+      this.tiempoTranscurridoEnSegundos = this.tiempoInicialEnSegundos;
+      this.reproducir();
+    },
+    actualizar: function actualizar(tiempo) {
+      this.tiempoTranscurridoEnSegundos = tiempo;
+    }
+  },
+  computed: {
+    minutos: function minutos() {
+      return Math.floor(this.tiempoTranscurridoEnSegundos / 60);
+    },
+    segundos: function segundos() {
+      var minutos = Math.floor(this.tiempoTranscurridoEnSegundos / 60);
+      return Math.round((this.tiempoTranscurridoEnSegundos / 60 - minutos) * 60);
     }
   }
 });
@@ -2443,44 +2625,6 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     estado: function estado() {
       return this.activo ? "activo" : "inactivo";
-    }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Reloj.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/AppPomodoro/components/Reloj.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    tiempoEnSegundos: {
-      type: Number,
-      required: true
-    }
-  },
-  computed: {
-    minutos: function minutos() {
-      return Math.floor(this.tiempoEnSegundos / 60);
-    },
-    segundos: function segundos() {
-      var minutos = Math.floor(this.tiempoEnSegundos / 60);
-      return Math.round((this.tiempoEnSegundos / 60 - minutos) * 60);
     }
   }
 });
@@ -6955,7 +7099,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n#vue-circle{\n\tleft:50%;\n\ttransform: translateX(-50%);\n}\n", ""]);
+exports.push([module.i, "\n.vue-circle {\n  left: 50%;\n  transform: translateX(-50%);\n}\n", ""]);
 
 // exports
 
@@ -61009,35 +61153,144 @@ var render = function() {
       "div",
       { staticClass: "col-12" },
       [
-        _c(
-          "vue-circle",
-          {
-            attrs: {
-              size: 300,
-              progress: _vm.progreso,
-              reverse: true,
-              "show-percent": false,
-              "start-angle": -Math.PI / 2,
-              "line-cap": "round",
-              fill: { color: "red" },
-              "insert-mode": "append",
-              id: "vue-circle"
-            }
-          },
-          [_c("controlReloj", { on: { play: _vm.play, pause: _vm.pause } })],
-          1
-        ),
+        _c("keep-alive", [
+          _vm.trabajo
+            ? _c(
+                "div",
+                [
+                  _c(
+                    "vue-circle",
+                    {
+                      ref: "progresoPomodoro",
+                      staticClass: "vue-circle",
+                      attrs: {
+                        progress: 100,
+                        size: 300,
+                        reverse: true,
+                        "show-percent": false,
+                        "start-angle": -Math.PI / 2,
+                        "line-cap": "round",
+                        fill: { color: "red" },
+                        "insert-mode": "append"
+                      }
+                    },
+                    [
+                      _c("controlReloj", {
+                        on: {
+                          reproducir: _vm.reproducirPomodoro,
+                          detener: _vm.detenerPomodoro
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("cronometro", {
+                    ref: "cronometroPomodoro",
+                    attrs: {
+                      tiempoInicialEnSegundos: _vm.duracionDeLosPomodoros
+                    },
+                    on: { cambio: _vm.progreso, alarma: _vm.descanzar }
+                  })
+                ],
+                1
+              )
+            : _vm._e()
+        ]),
         _vm._v(" "),
-        _c("reloj", {
-          attrs: {
-            tiempoEnSegundos:
-              _vm.datosAppPomodoro.tiempoPomodoroActualEnSegundos
-          }
-        }),
+        _c("keep-alive", [
+          _vm.descansoCorto
+            ? _c(
+                "div",
+                [
+                  _c(
+                    "vue-circle",
+                    {
+                      ref: "progresoDescansoCorto",
+                      staticClass: "vue-circle",
+                      attrs: {
+                        progress: 100,
+                        size: 300,
+                        reverse: true,
+                        "show-percent": false,
+                        "start-angle": -Math.PI / 2,
+                        "line-cap": "round",
+                        fill: { color: "green" },
+                        "insert-mode": "append"
+                      }
+                    },
+                    [
+                      _c("controlReloj", {
+                        on: {
+                          reproducir: _vm.reproducirDescansoCorto,
+                          detener: _vm.detenerDescansoCorto
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("cronometro", {
+                    ref: "cronometroDescansoCorto",
+                    attrs: {
+                      tiempoInicialEnSegundos: _vm.duracionDelDescansoCorto
+                    },
+                    on: { cambio: _vm.progreso, alarma: _vm.trabajar }
+                  })
+                ],
+                1
+              )
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c("keep-alive", [
+          _vm.descansoLargo
+            ? _c(
+                "div",
+                [
+                  _c(
+                    "vue-circle",
+                    {
+                      ref: "progresoDescansoLargo",
+                      staticClass: "vue-circle",
+                      attrs: {
+                        progress: 100,
+                        size: 300,
+                        reverse: true,
+                        "show-percent": false,
+                        "start-angle": -Math.PI / 2,
+                        "line-cap": "round",
+                        fill: { color: "blue" },
+                        "insert-mode": "append"
+                      }
+                    },
+                    [
+                      _c("controlReloj", {
+                        on: {
+                          reproducir: _vm.reproducirDescansoLargo,
+                          detener: _vm.detenerDescansoLargo
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("cronometro", {
+                    ref: "cronometroDescansoLargo",
+                    attrs: {
+                      tiempoInicialEnSegundos: _vm.duracionDelDescansoLargo
+                    },
+                    on: { cambio: _vm.progreso, alarma: _vm.trabajar }
+                  })
+                ],
+                1
+              )
+            : _vm._e()
+        ]),
         _vm._v(" "),
         _c("contadorPomodoros", {
           attrs: {
-            pomodorosActivos: _vm.datosAppPomodoro.pomodorosActivos,
+            pomodorosActivos: _vm.pomodorosActivos,
             cantidadDePomodoros: _vm.cantidadDePomodoros
           }
         })
@@ -61177,6 +61430,32 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=template&id=46809e7e&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=template&id=46809e7e& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "display-4 d-flex justify-content-center" }, [
+    _c("span", [_vm._v(_vm._s(this.minutos) + ":" + _vm._s(this.segundos))])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Pomodoro.vue?vue&type=template&id=0991dacf&scoped=true&":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/AppPomodoro/components/Pomodoro.vue?vue&type=template&id=0991dacf&scoped=true& ***!
@@ -61215,32 +61494,6 @@ var render = function() {
         })
       ]
     )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Reloj.vue?vue&type=template&id=3efb8e3e&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/AppPomodoro/components/Reloj.vue?vue&type=template&id=3efb8e3e& ***!
-  \********************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "display-4 d-flex justify-content-center" }, [
-    _c("span", [_vm._v(_vm._s(this.minutos) + ":" + _vm._s(this.segundos))])
   ])
 }
 var staticRenderFns = []
@@ -77070,6 +77323,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/AppPomodoro/components/Cronometro.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/AppPomodoro/components/Cronometro.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Cronometro_vue_vue_type_template_id_46809e7e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Cronometro.vue?vue&type=template&id=46809e7e& */ "./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=template&id=46809e7e&");
+/* harmony import */ var _Cronometro_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Cronometro.vue?vue&type=script&lang=js& */ "./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Cronometro_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Cronometro_vue_vue_type_template_id_46809e7e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Cronometro_vue_vue_type_template_id_46809e7e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/AppPomodoro/components/Cronometro.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Cronometro_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Cronometro.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Cronometro_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=template&id=46809e7e&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=template&id=46809e7e& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cronometro_vue_vue_type_template_id_46809e7e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Cronometro.vue?vue&type=template&id=46809e7e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Cronometro.vue?vue&type=template&id=46809e7e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cronometro_vue_vue_type_template_id_46809e7e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cronometro_vue_vue_type_template_id_46809e7e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/AppPomodoro/components/Pomodoro.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/AppPomodoro/components/Pomodoro.vue ***!
@@ -77152,75 +77474,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pomodoro_vue_vue_type_template_id_0991dacf_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pomodoro_vue_vue_type_template_id_0991dacf_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/AppPomodoro/components/Reloj.vue":
-/*!*******************************************************!*\
-  !*** ./resources/js/AppPomodoro/components/Reloj.vue ***!
-  \*******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Reloj_vue_vue_type_template_id_3efb8e3e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Reloj.vue?vue&type=template&id=3efb8e3e& */ "./resources/js/AppPomodoro/components/Reloj.vue?vue&type=template&id=3efb8e3e&");
-/* harmony import */ var _Reloj_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Reloj.vue?vue&type=script&lang=js& */ "./resources/js/AppPomodoro/components/Reloj.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Reloj_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Reloj_vue_vue_type_template_id_3efb8e3e___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Reloj_vue_vue_type_template_id_3efb8e3e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/AppPomodoro/components/Reloj.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/AppPomodoro/components/Reloj.vue?vue&type=script&lang=js&":
-/*!********************************************************************************!*\
-  !*** ./resources/js/AppPomodoro/components/Reloj.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Reloj_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Reloj.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Reloj.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Reloj_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/AppPomodoro/components/Reloj.vue?vue&type=template&id=3efb8e3e&":
-/*!**************************************************************************************!*\
-  !*** ./resources/js/AppPomodoro/components/Reloj.vue?vue&type=template&id=3efb8e3e& ***!
-  \**************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reloj_vue_vue_type_template_id_3efb8e3e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Reloj.vue?vue&type=template&id=3efb8e3e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/AppPomodoro/components/Reloj.vue?vue&type=template&id=3efb8e3e&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reloj_vue_vue_type_template_id_3efb8e3e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reloj_vue_vue_type_template_id_3efb8e3e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
